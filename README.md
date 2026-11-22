@@ -1,11 +1,12 @@
 # Sistema de préstamo de equipos universitarios
 
-Aplicación Python de consola para registrar portátiles y proyectores, registrar estudiantes, prestar equipos disponibles, devolverlos y consultar su estado. El núcleo es una API Python (`src/prestamos`) y la CLI es una capa delgada sobre esa API.
+Aplicación Python para registrar portátiles y proyectores, registrar estudiantes, prestar equipos disponibles, devolverlos y consultar su estado. El núcleo es una API Python (`src/prestamos`) con dos interfaces: una CLI de consola y una interfaz gráfica con tkinter.
 
 ## Requisitos
 
 - Python 3.10 o superior.
 - pytest para ejecutar las pruebas.
+- tkinter para la interfaz gráfica (incluido en las instalaciones estándar de Python en Windows y macOS; en Linux puede requerir `python3-tk`).
 
 Instalar pytest si no está disponible:
 
@@ -21,7 +22,17 @@ python -m pytest -q
 
 La suite cubre las 41 pruebas unitarias derivadas de las especificaciones OpenSpec.
 
-## Ejecutar el programa
+## Ejecutar la interfaz gráfica
+
+Desde la raíz del proyecto:
+
+```bash
+python gui.py
+```
+
+La ventana permite registrar equipos y estudiantes, prestar, devolver y ver tres listas actualizadas (equipos con su estado, estudiantes y préstamos activos). Comparte el mismo `LoanService` que la CLI; el estado se mantiene mientras la ventana esté abierta.
+
+## Ejecutar la CLI
 
 Desde la raíz del proyecto:
 
@@ -75,7 +86,7 @@ devolver LAP-001
 
 ## Estado en memoria
 
-Equipos, estudiantes y préstamos viven solo en memoria: se conservan durante una sesión de la CLI y se descartan al salir o al reiniciar el proceso. No hay base de datos ni archivos de datos.
+Equipos, estudiantes y préstamos viven solo en memoria: se conservan durante una sesión de la CLI o mientras la ventana gráfica esté abierta, y se descartan al salir o reiniciar el proceso. No hay base de datos ni archivos de datos.
 
 ## Especificaciones
 
