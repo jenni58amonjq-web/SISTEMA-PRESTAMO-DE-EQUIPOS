@@ -1,17 +1,18 @@
 # Sistema de préstamo de equipos universitarios
 
-Aplicación Python para registrar portátiles y proyectores, registrar estudiantes, prestar equipos disponibles, devolverlos y consultar su estado. El núcleo es una API Python (`src/prestamos`) con dos interfaces: una CLI de consola y una interfaz gráfica con tkinter.
+Aplicación Python para registrar portátiles y proyectores, registrar estudiantes, prestar equipos disponibles, devolverlos y consultar su estado. El núcleo es una API Python (`src/prestamos`) con tres interfaces: CLI de consola, ventana tkinter e interfaz web con Flask.
 
 ## Requisitos
 
 - Python 3.10 o superior.
 - pytest para ejecutar las pruebas.
 - tkinter para la interfaz gráfica (incluido en las instalaciones estándar de Python en Windows y macOS; en Linux puede requerir `python3-tk`).
+- Flask para la interfaz web.
 
-Instalar pytest si no está disponible:
+Instalar las dependencias de desarrollo si no están disponibles:
 
 ```bash
-python -m pip install pytest
+python -m pip install pytest flask
 ```
 
 ## Ejecutar las pruebas
@@ -31,6 +32,14 @@ python gui.py
 ```
 
 La ventana permite registrar equipos y estudiantes, prestar, devolver y ver tres listas actualizadas (equipos con su estado, estudiantes y préstamos activos). Comparte el mismo `LoanService` que la CLI; el estado se mantiene mientras la ventana esté abierta.
+
+## Ejecutar la interfaz web
+
+```bash
+python web_app.py
+```
+
+Luego abre <http://127.0.0.1:5000> en el navegador. La página muestra resumen, formularios para registrar equipos y estudiantes, prestar y devolver, y tablas con el inventario, los estudiantes y los préstamos activos. El HTML y el CSS están en `templates/`.
 
 ## Ejecutar la CLI
 
@@ -86,7 +95,7 @@ devolver LAP-001
 
 ## Estado en memoria
 
-Equipos, estudiantes y préstamos viven solo en memoria: se conservan durante una sesión de la CLI o mientras la ventana gráfica esté abierta, y se descartan al salir o reiniciar el proceso. No hay base de datos ni archivos de datos.
+Equipos, estudiantes y préstamos viven solo en memoria: se conservan durante una sesión de la CLI, mientras la ventana gráfica esté abierta o mientras el servidor web esté en ejecución, y se descartan al salir o reiniciar el proceso. No hay base de datos ni archivos de datos.
 
 ## Especificaciones
 

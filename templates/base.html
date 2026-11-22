@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Sistema de préstamos{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('style') }}">
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar-inner">
+        <div class="brand">
+          <span class="brand-mark">UP</span>
+          <div>
+            <h1>Préstamo de equipos</h1>
+            <p>Portátiles y proyectores universitarios</p>
+          </div>
+        </div>
+        <span class="badge badge-info">Estado en memoria</span>
+      </div>
+    </header>
+
+    <main class="container">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+      Sistema de préstamo de equipos · Interfaz web con Flask
+    </footer>
+  </body>
+</html>

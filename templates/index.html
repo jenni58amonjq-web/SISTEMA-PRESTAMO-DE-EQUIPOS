@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Panel de préstamos{% endblock %}
+
+{% block content %}
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      <div class="messages">
+        {% for category, message in messages %}
+          <div class="alert alert-{{ 'error' if category == 'error' else 'success' }}">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  <section class="stats" aria-label="Resumen">
+    <article class="stat-card">
+      <span class="stat-label">Equipos registrados</span>
+      <strong class="stat-value">{{ total_equipos }}</strong>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Estudiantes registrados</span>
+      <strong class="stat-value">{{ total_estudiantes }}</strong>
+    </article>
+    <article class="stat-card">
+      <span class="stat-label">Préstamos activos</span>
+      <strong class="stat-value">{{ total_prestamos }}</strong>
+    </article>
+  </section>
+
+  <section class="forms" aria-label="Operaciones">
+    <article class="card">
+      <h2>Registrar equipo</h2>
+      <form action="{{ url_for('create_equipment') }}" method="post">
+        <label for="equipment_id">Identificador</label>
+        <input id="equipment_id" name="equipment_id" placeholder="LAP-001" required>
+
+        <label for="kind">Tipo</label>
+        <select id="kind" name="kind" required>
+          <option value="laptop">Portátil</option>
+          <option value="projector">Proyector</option>
+        </select>
+
+        <label for="description">Descripción</label>
+        <input id="description" name="description" placeholder="Portátil laboratorio 1">
+
+        <button type="submit">Registrar equipo</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <h2>Registrar estudiante</h2>
+      <form action="{{ url_for('create_student') }}" method="post">
+        <label for="student_id">Identificador</label>
+        <input id="student_id" name="student_id" placeholder="202312345" required>
+
+        <label for="name">Nombre</label>
+        <input id="name" name="name" placeholder="Ana Torres" required>
+
+        <button type="submit">Registrar estudiante</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <h2>Prestar equipo</h2>
+      <form action="{{ url_for('create_loan') }}" method="post">
+        <label for="loan_equipment">ID del equipo</label>
+        <input id="loan_equipment" name="equipment_id" placeholder="LAP-001" required>
+
+        <label for="loan_student">ID del estudiante</label>
+        <input id="loan_student" name="student_id" placeholder="202312345" required>
+
+        <button type="submit">Prestar equipo</button>
+      </form>
+    </article>
+
+    <article class="card">
+      <h2>Devolver equipo</h2>
+      <form action="{{ url_for('return_equipment') }}" method="post">
+        <label for="return_equipment">ID del equipo</label>
+        <input id="return_equipment" name="equipment_id" placeholder="LAP-001" required>
+
+        <button type="submit" class="button-secondary">Devolver equipo</button>
+      </form>
+    </article>
+  </section>
+
+  <section class="tables" aria-label="Listados">
+    <article class="card table-card">
+      <h2>Inventario</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Tipo</th><th>Estado</th><th>Descripción</th></tr>
+          </thead>
+          <tbody>
+            {% for equipo in equipos %}
+              <tr>
+                <td class="mono">{{ equipo.id }}</td>
+                <td>{{ equipo.tipo }}</td>
+                <td>
+                  <span class="badge badge-{{ 'warn' if equipo.estado == 'prestado' else 'ok' }}">
+                    {{ equipo.estado }}
+                  </span>
+                </td>
+                <td>{{ equipo.descripcion or '—' }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="4" class="empty">No hay equipos registrados.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="card table-card">
+      <h2>Estudiantes</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>ID</th><th>Nombre</th></tr>
+          </thead>
+          <tbody>
+            {% for estudiante in estudiantes %}
+              <tr>
+                <td class="mono">{{ estudiante.id }}</td>
+                <td>{{ estudiante.nombre }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="2" class="empty">No hay estudiantes registrados.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+
+    <article class="card table-card">
+      <h2>Préstamos activos</h2>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr><th>Préstamo</th><th>Equipo</th><th>Estudiante</th><th>Fecha</th></tr>
+          </thead>
+          <tbody>
+            {% for prestamo in prestamos %}
+              <tr>
+                <td class="mono">{{ prestamo.id }}</td>
+                <td class="mono">{{ prestamo.equipo }}</td>
+                <td class="mono">{{ prestamo.estudiante }}</td>
+                <td>{{ prestamo.fecha }}</td>
+              </tr>
+            {% else %}
+              <tr><td colspan="4" class="empty">No hay préstamos activos.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </section>
+{% endblock %}
